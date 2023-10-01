@@ -53,7 +53,7 @@ def load_new_csv():
     dir_name = os.path.join(os.path.dirname(__file__), "output/CTOC/CUAD/0928-")
     weights_mapping = {"title:1": "w-title-1",
                        "title:0.5, index:0.5": "w-title-05-w-index-05",
-                       "title:0.5, indexכפרן:0.3, body:0.2": "w-title-05-w-index-03-w-text-02",
+                       "title:0.5, index:0.3, body:0.2": "w-title-05-w-index-03-w-text-02",
                        "title:0.33, index:0.33, body:0.33": "equal-similarity-w"}
     full_dir_name = dir_name + weights_mapping[st.session_state["weights"]]
     with_model = os.path.join(full_dir_name, st.session_state["model_name"])
