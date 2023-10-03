@@ -55,12 +55,13 @@ def load_csv(file_path):
 
 
 def load_new_csv():
-    dir_name = os.path.join(os.path.dirname(__file__), "output/CTOC/CUAD/1002/")
+    dir_name = os.path.join(os.path.dirname(__file__), "output/CTOC/CUAD/")
+    dir_name = os.path.join(dir_name, st.session_state["version"])
     weights_mapping = {"title:1": "w-title-1",
                        "title:0.5, index:0.5": "w-title-05-w-index-05",
                        "title:0.5, index:0.3, body:0.2": "w-title-05-w-index-03-w-text-02",
                        "title:0.33, index:0.33, body:0.33": "equal-similarity-w"}
-    full_dir_name = dir_name + weights_mapping[st.session_state["weights"]]
+    full_dir_name = os.path.join(dir_name, weights_mapping[st.session_state["weights"]])
     with_model = os.path.join(full_dir_name, st.session_state["model_name"])
     csv_file = os.path.join(with_model, "meta_filtered.csv")
     st.session_state['df'] = load_csv(csv_file)
@@ -73,6 +74,11 @@ def main():
 
     st.write("Select which version of the ToC you want to view.")
 
+    st.selectbox("version",
+                 ["02-10", "28-09"],
+                 key="version",
+                 on_change=load_new_csv)
+
     st.selectbox("model name",
                  ["all-roberta-large-v1", "all-mpnet-base-v2", "gtr-t5-large"],
                  key="model_name",
@@ -83,8 +89,9 @@ def main():
                  key="weights",
                  on_change=load_new_csv)
 
+    cover_options = ["document", "collection"] if st.session_state['version'] == "28-09" else ["document"]
     st.selectbox("cover score",
-                 ["document", "collection"],
+                 cover_options,
                  key="cover_score",
                  on_change=generate_colors_map)
 
@@ -100,8 +107,6 @@ def main():
                     max_value=max_val_num_clusters,
                     key="num_clusters",
                     on_change=generate_colors_map)
-
-
 
     # Load CSV data
     if 'df' not in st.session_state:
