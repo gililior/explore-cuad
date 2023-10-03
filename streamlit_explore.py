@@ -22,6 +22,9 @@ def generate_random_colors(length):
 
 def generate_colors_map():
     df = st.session_state['df']
+    orig_colors = {}
+    if 'color_map' in st.session_state:
+        orig_colors = st.session_state['color_map']
     if st.session_state["cover_score"] == "document":
         representatives = []
         for rank in range(1, st.session_state['num_clusters']+1):
@@ -29,9 +32,9 @@ def generate_colors_map():
             representatives.append(rep)
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
-    colors = generate_random_colors(len(representatives))
-    color_map = {}
-    for i, rep in enumerate(representatives):
+    colors = generate_random_colors(len(representatives)-len(orig_colors))
+    color_map = orig_colors
+    for i, rep in enumerate([reps for reps in representatives if reps not in orig_colors]):
         color_map[rep] = colors[i]
     st.session_state['color_map'] = color_map
 
