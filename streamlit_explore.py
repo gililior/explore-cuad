@@ -23,13 +23,11 @@ def generate_random_colors(length):
 def generate_colors_map():
     st.session_state['color_map'] = {}
     df = st.session_state['df']
-    if st.session_state["cover_score"] == "document":
-        representatives = []
-        for rank in range(1, st.session_state['num_clusters']+1):
-            rep = df[df["rank"] == rank]["representative"].values[0]
-            representatives.append(rep)
-    else:
-        representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
+    representatives = []
+    for rank in range(1, st.session_state['num_clusters']+1):
+        rep = df[df["rank"] == rank]["representative"].values[0]
+        representatives.append(rep)
+    # representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
     print(representatives)
     colors = generate_random_colors(len(representatives))
     color_map = {}
@@ -91,13 +89,13 @@ def main():
                  key="weights",
                  on_change=load_new_csv)
 
-    st.selectbox("cover score",
-                 ["document", "collection"],
-                 key="cover_score",
-                 on_change=generate_colors_map)
+    # st.selectbox("cover score",
+    #              ["document", "collection"],
+    #              key="cover_score",
+    #              on_change=generate_colors_map)
 
     st.number_input("num clusters to display", min_value=1,
-                    max_value=15,
+                    max_value=30,
                     key="num_clusters",
                     on_change=generate_colors_map)
 
