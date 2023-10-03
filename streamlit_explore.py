@@ -22,7 +22,10 @@ def generate_random_colors(length):
 
 def generate_colors_map():
     df = st.session_state['df']
-    representatives = df[df["rank"] <= st.session_state['num_clusters']].representative.unique()
+    if st.session_state["cover_score"] == "document":
+        representatives = df[df["rank"] <= st.session_state['num_clusters']].representative.unique()
+    else:
+        representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
     orig_best = df[df["best_cluster"] == True].representative.unique()
     colors = generate_random_colors(len(representatives))
     color_map = {}
@@ -50,14 +53,14 @@ def load_csv(file_path):
 
 
 def load_new_csv():
-    dir_name = os.path.join(os.path.dirname(__file__), "output/CTOC/CUAD/0928-")
+    dir_name = os.path.join(os.path.dirname(__file__), "output/CTOC/CUAD/1002/")
     weights_mapping = {"title:1": "w-title-1",
                        "title:0.5, index:0.5": "w-title-05-w-index-05",
                        "title:0.5, index:0.3, body:0.2": "w-title-05-w-index-03-w-text-02",
                        "title:0.33, index:0.33, body:0.33": "equal-similarity-w"}
     full_dir_name = dir_name + weights_mapping[st.session_state["weights"]]
     with_model = os.path.join(full_dir_name, st.session_state["model_name"])
-    csv_file = os.path.join(with_model, "meta_drop_duplicates.csv")
+    csv_file = os.path.join(with_model, "meta_filtered.csv")
     st.session_state['df'] = load_csv(csv_file)
     generate_colors_map()
 
@@ -78,9 +81,17 @@ def main():
                  key="weights",
                  on_change=load_new_csv)
 
-    st.number_input("num clusters to display", min_value=1, max_value=30,
+    st.selectbox("cover score",
+                 ["document", "collection"],
+                 key="cover_score",
+                 on_change=generate_colors_map)
+
+    st.number_input("num clusters to display", min_value=1,
+                    max_value=30 if st.session_state["cover_score"] == "document" else 15,
                     key="num_clusters",
                     on_change=generate_colors_map)
+
+
 
     # Load CSV data
     if 'df' not in st.session_state:
