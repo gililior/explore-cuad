@@ -26,7 +26,6 @@ def generate_colors_map():
         representatives = []
         for rank in range(1, st.session_state['num_clusters']+1):
             rep = df[df["rank"] == rank]["representative"].values[0]
-            print(rep)
             representatives.append(rep)
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
