@@ -24,6 +24,8 @@ def generate_colors_map():
     df = st.session_state['df']
     if st.session_state["cover_score"] == "document":
         representatives = df[df["rank"] <= st.session_state['num_clusters']].representative.unique()
+        # sort representatives by rank
+        representatives = sorted(representatives, key=lambda x: df[df["representative"] == x]["rank"].iloc[0])
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
     orig_best = df[df["best_cluster"] == True].representative.unique()
