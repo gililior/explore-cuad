@@ -21,6 +21,7 @@ def generate_random_colors(length):
 
 
 def generate_colors_map():
+    st.session_state['color_map'] = {}
     df = st.session_state['df']
     if st.session_state["cover_score"] == "document":
         representatives = []
