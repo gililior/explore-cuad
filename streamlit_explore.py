@@ -32,13 +32,9 @@ def generate_colors_map():
             representatives.append(rep)
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
-    new_reps = [reps for reps in representatives if reps not in orig_colors]
-    old_reps = [reps for reps in representatives if reps in orig_colors]
-    colors = generate_random_colors(len(new_reps))
-    color_map = {}
-    for rep in old_reps:
-        color_map[rep] = orig_colors[rep]
-    for i, rep in enumerate(new_reps):
+    colors = generate_random_colors(len(representatives)-len(orig_colors))
+    color_map = orig_colors
+    for i, rep in enumerate([reps for reps in representatives if reps not in orig_colors]):
         color_map[rep] = colors[i]
     st.session_state['color_map'] = color_map
 
