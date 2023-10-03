@@ -90,7 +90,7 @@ def main():
 
     if st.session_state["cover_score"] == "document":
         if 'df' in st.session_state:
-            max_val_num_clusters = st.session_state['df']['rank'].max()
+            max_val_num_clusters = int(st.session_state['df']['rank'].max())
         else:
             max_val_num_clusters = 30
     else:
