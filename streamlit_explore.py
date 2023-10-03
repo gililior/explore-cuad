@@ -97,7 +97,7 @@ def main():
                  on_change=generate_colors_map)
 
     st.number_input("num clusters to display", min_value=1,
-                    max_value=30 if st.session_state["cover_score"] == "document" else 15,
+                    max_value=15,
                     key="num_clusters",
                     on_change=generate_colors_map)
 
