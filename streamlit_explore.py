@@ -29,6 +29,7 @@ def generate_colors_map():
             representatives.append(rep)
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
+    print(representatives)
     colors = generate_random_colors(len(representatives))
     color_map = {}
     for i, rep in enumerate(representatives):
