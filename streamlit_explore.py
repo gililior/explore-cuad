@@ -27,7 +27,7 @@ def generate_colors_map():
         representatives = [0] * len(representatives_set)
         for rep in representatives_set:
             rank_rep = df[df["representative"] == rep]["rank"].iloc[0]
-            representatives[rank_rep-1] = rep
+            representatives[int(rank_rep)-1] = rep
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
     colors = generate_random_colors(len(representatives))
