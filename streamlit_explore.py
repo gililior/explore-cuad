@@ -89,9 +89,8 @@ def main():
                  key="weights",
                  on_change=load_new_csv)
 
-    cover_options = ["document", "collection"] if st.session_state['version'] == "28-09" else ["document"]
     st.selectbox("cover score",
-                 cover_options,
+                 ["document", "collection"],
                  key="cover_score",
                  on_change=generate_colors_map)
 
