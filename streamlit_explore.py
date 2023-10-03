@@ -28,7 +28,6 @@ def generate_colors_map():
         representatives = sorted(representatives, key=lambda x: df[df["representative"] == x]["rank"].iloc[0])
     else:
         representatives = df[df[f"best_{st.session_state['num_clusters']}"] == True].representative.unique()
-    orig_best = df[df["best_cluster"] == True].representative.unique()
     colors = generate_random_colors(len(representatives))
     color_map = {}
     for i, rep in enumerate(representatives):
