@@ -75,7 +75,7 @@ def main():
     st.write("Select which version of the ToC you want to view.")
 
     st.selectbox("version",
-                 ["02-10", "28-09"],
+                 ["03-10", "02-10", "28-09"],
                  key="version",
                  on_change=load_new_csv)
 
